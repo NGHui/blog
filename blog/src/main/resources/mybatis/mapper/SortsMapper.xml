@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hui.blog.mapper.SortsMapper" >
+  <resultMap id="BaseResultMap" type="com.hui.blog.bean.Sorts" >
+    <id column="sort_id" property="sortId" jdbcType="BIGINT" />
+    <result column="sort_name" property="sortName" jdbcType="VARCHAR" />
+    <result column="sort_alias" property="sortAlias" jdbcType="VARCHAR" />
+    <result column="parent_sort_id" property="parentSortId" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.hui.blog.bean.Sorts" extends="BaseResultMap" >
+    <result column="sort_description" property="sortDescription" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    sort_id, sort_name, sort_alias, parent_sort_id
+  </sql>
+  <sql id="Blob_Column_List" >
+    sort_description
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.hui.blog.bean.SortsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ngh_sorts
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.hui.blog.bean.SortsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ngh_sorts
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ngh_sorts
+    where sort_id = #{sortId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from ngh_sorts
+    where sort_id = #{sortId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hui.blog.bean.SortsExample" >
+    delete from ngh_sorts
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hui.blog.bean.Sorts" >
+    insert into ngh_sorts (sort_id, sort_name, sort_alias, 
+      parent_sort_id, sort_description)
+    values (#{sortId,jdbcType=BIGINT}, #{sortName,jdbcType=VARCHAR}, #{sortAlias,jdbcType=VARCHAR}, 
+      #{parentSortId,jdbcType=BIGINT}, #{sortDescription,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hui.blog.bean.Sorts" >
+    insert into ngh_sorts
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="sortId != null" >
+        sort_id,
+      </if>
+      <if test="sortName != null" >
+        sort_name,
+      </if>
+      <if test="sortAlias != null" >
+        sort_alias,
+      </if>
+      <if test="parentSortId != null" >
+        parent_sort_id,
+      </if>
+      <if test="sortDescription != null" >
+        sort_description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sortId != null" >
+        #{sortId,jdbcType=BIGINT},
+      </if>
+      <if test="sortName != null" >
+        #{sortName,jdbcType=VARCHAR},
+      </if>
+      <if test="sortAlias != null" >
+        #{sortAlias,jdbcType=VARCHAR},
+      </if>
+      <if test="parentSortId != null" >
+        #{parentSortId,jdbcType=BIGINT},
+      </if>
+      <if test="sortDescription != null" >
+        #{sortDescription,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hui.blog.bean.SortsExample" resultType="java.lang.Integer" >
+    select count(*) from ngh_sorts
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ngh_sorts
+    <set >
+      <if test="record.sortId != null" >
+        sort_id = #{record.sortId,jdbcType=BIGINT},
+      </if>
+      <if test="record.sortName != null" >
+        sort_name = #{record.sortName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sortAlias != null" >
+        sort_alias = #{record.sortAlias,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentSortId != null" >
+        parent_sort_id = #{record.parentSortId,jdbcType=BIGINT},
+      </if>
+      <if test="record.sortDescription != null" >
+        sort_description = #{record.sortDescription,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update ngh_sorts
+    set sort_id = #{record.sortId,jdbcType=BIGINT},
+      sort_name = #{record.sortName,jdbcType=VARCHAR},
+      sort_alias = #{record.sortAlias,jdbcType=VARCHAR},
+      parent_sort_id = #{record.parentSortId,jdbcType=BIGINT},
+      sort_description = #{record.sortDescription,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ngh_sorts
+    set sort_id = #{record.sortId,jdbcType=BIGINT},
+      sort_name = #{record.sortName,jdbcType=VARCHAR},
+      sort_alias = #{record.sortAlias,jdbcType=VARCHAR},
+      parent_sort_id = #{record.parentSortId,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hui.blog.bean.Sorts" >
+    update ngh_sorts
+    <set >
+      <if test="sortName != null" >
+        sort_name = #{sortName,jdbcType=VARCHAR},
+      </if>
+      <if test="sortAlias != null" >
+        sort_alias = #{sortAlias,jdbcType=VARCHAR},
+      </if>
+      <if test="parentSortId != null" >
+        parent_sort_id = #{parentSortId,jdbcType=BIGINT},
+      </if>
+      <if test="sortDescription != null" >
+        sort_description = #{sortDescription,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where sort_id = #{sortId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.hui.blog.bean.Sorts" >
+    update ngh_sorts
+    set sort_name = #{sortName,jdbcType=VARCHAR},
+      sort_alias = #{sortAlias,jdbcType=VARCHAR},
+      parent_sort_id = #{parentSortId,jdbcType=BIGINT},
+      sort_description = #{sortDescription,jdbcType=LONGVARCHAR}
+    where sort_id = #{sortId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hui.blog.bean.Sorts" >
+    update ngh_sorts
+    set sort_name = #{sortName,jdbcType=VARCHAR},
+      sort_alias = #{sortAlias,jdbcType=VARCHAR},
+      parent_sort_id = #{parentSortId,jdbcType=BIGINT}
+    where sort_id = #{sortId,jdbcType=BIGINT}
+  </update>
+</mapper>
